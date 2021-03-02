@@ -8,11 +8,7 @@ import QuestionsProps from './types';
 
 function Questions({ questionsData }: QuestionsProps) {
   function sendQuiz() {
-    db.collection('quiz').add({ ...questionsData })
-      .then((docRef) => {
-      })
-      .catch((error) => {
-      });
+    db.collection('quiz').add({ ...questionsData });
   }
 
   return (

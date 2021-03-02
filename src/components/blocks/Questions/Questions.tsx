@@ -10,10 +10,8 @@ function Questions({ questionsData }: QuestionsProps) {
   function sendQuiz() {
     db.collection('quiz').add({ ...questionsData })
       .then((docRef) => {
-        console.log('Document written with ID: ', docRef.id);
       })
       .catch((error) => {
-        console.error('Error adding document: ', error);
       });
   }
 

@@ -5,9 +5,9 @@ import StyledSelectedQuiz from './styles';
 import SelectedQuizProps from './types';
 
 function SelectedQuiz({ newQuizData, deleteRecord }: SelectedQuizProps) {
-  function handleEdit(event: any) {
-    const key = event.target.getAttribute('record-key');
-    console.log(key);
+  function handleEdit() {
+    // const key = event.target.getAttribute('record-key');
+    // console.log(key);
   }
 
   function handleDelete(event: any) {

@@ -8,7 +8,7 @@ import { QuizData, AppData, initialApp } from './types';
 
 function App() {
   const [appData, setAppData] = useState<AppData>(initialApp);
-  console.log('new state', appData);
+  // console.log('new state', appData);
 
   useEffect(() => {
     quizRef.onSnapshot((querySnapshot) => {

@@ -23,7 +23,7 @@ function EditorPage({ appData, updateAppData }: EditorPageProps) {
 
   useEffect(() => {
     if (quizStatus) {
-      console.log(currentQuiz, quizStatus);
+      // console.log(currentQuiz, quizStatus);
       updateAppData(currentQuiz, quizData, quizStatus);
     }
   }, [quizStatus]);

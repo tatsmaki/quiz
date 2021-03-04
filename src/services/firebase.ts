@@ -15,4 +15,6 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 
-export default db;
+const quizRef = db.collection('quiz');
+
+export default quizRef;

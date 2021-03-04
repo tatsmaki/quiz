@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledForm = styled.form`
   display: flex;
-  width: 50vw;
+  margin: 2vh 0;
 `;
 
 export default StyledForm;

@@ -3,30 +3,37 @@ import { Button, Input } from 'antd';
 
 import quizRef from 'services/firebase';
 
-import { QuizData, Quiz } from 'components/App/types';
+import { QuizData } from 'components/App/types';
+import QuizesSelect from 'components/blocks/QuizesSelect';
 import SelectedQuiz from 'components/blocks/SelectedQuiz';
 import AddQuestion from 'components/blocks/AddQuestion';
 
 import EditorPageProps from './types';
 import {
   StyledEditorPage,
-  StyledQuizesSelect,
   StyledQuizEditor,
   StyledSaveQuiz,
 } from './styles';
 
+interface EditQuestion {
+  isEdit: boolean
+  text: string
+}
+
 function EditorPage({ appData, updateAppData }: EditorPageProps) {
   const [currentQuiz, setCurrentQuiz] = useState<string>('New Quiz');
-  const [quizData, setQuizData] = useState<Array<QuizData>>(appData['New Quiz'].data);
+
   const [quizName, setQuizName] = useState<string>('');
   const [quizStatus, setQuizStatus] = useState<string>('');
+  const [quizData, setQuizData] = useState<Array<QuizData>>(appData['New Quiz'].data);
+
+  const [isEditQuestion, setEditQuestion] = useState<EditQuestion>({ isEdit: false, text: '' });
 
   useEffect(() => {
     if (quizStatus) {
-      // console.log(currentQuiz, quizStatus);
       updateAppData(currentQuiz, quizData, quizStatus);
     }
-  }, [quizStatus]);
+  }, [quizStatus, quizData]);
 
   function writeQuizName(event: React.ChangeEvent<HTMLInputElement>) {
     setQuizName(event.target.value);
@@ -36,10 +43,10 @@ function EditorPage({ appData, updateAppData }: EditorPageProps) {
     if (quizName) {
       quizRef.doc(quizName).set({ ...quizData })
         .then(() => {
-          setQuizStatus('green');
+          setQuizStatus('saved');
         })
         .catch(() => {
-          setQuizStatus('red');
+          setQuizStatus('failed');
         });
     }
   }
@@ -56,7 +63,7 @@ function EditorPage({ appData, updateAppData }: EditorPageProps) {
       tags: [],
     });
 
-    setQuizStatus('yellow');
+    setQuizStatus('edited');
     setQuizData(newQuizData);
   }
 
@@ -70,8 +77,17 @@ function EditorPage({ appData, updateAppData }: EditorPageProps) {
       { ...item, key: index + 1, number: index + 1 }
     ));
 
-    setQuizStatus('yellow');
+    setQuizStatus('edited');
     setQuizData(newQuizData);
+  }
+
+  function editQuestion(key: string) {
+    const editIndex = +key - 1;
+
+    setEditQuestion({
+      isEdit: true,
+      text: appData[currentQuiz].data[editIndex].question,
+    });
   }
 
   function handleClick(event: any) {
@@ -85,25 +101,19 @@ function EditorPage({ appData, updateAppData }: EditorPageProps) {
   return (
     <StyledEditorPage>
 
-      <StyledQuizesSelect>
-        <span>Current Quizes:</span>
-        {
-          Object.values(appData).map((quiz: Quiz) => (
-            <Button style={{ display: 'flex', alignItems: 'center' }} id={quiz.key} key={quiz.key} onClick={handleClick}>
-              {quiz.key}
-              <div style={{ background: quiz.status, width: '1vw', height: '1vw' }} />
-            </Button>
-          ))
-        }
-      </StyledQuizesSelect>
+      <QuizesSelect appData={appData} handleClick={handleClick} />
 
       <StyledQuizEditor>
         <StyledSaveQuiz>
           <Input placeholder="Enter Quiz Name" value={quizName} onChange={writeQuizName} />
           <Button onClick={sendQuiz}>Save Quiz</Button>
         </StyledSaveQuiz>
-        <SelectedQuiz newQuizData={quizData} deleteRecord={deleteQuestion} />
-        <AddQuestion addQuestion={addQuestion} />
+        <SelectedQuiz
+          newQuizData={quizData}
+          deleteQuestion={deleteQuestion}
+          editQuestion={editQuestion}
+        />
+        <AddQuestion addQuestion={addQuestion} editQuestion={isEditQuestion} />
       </StyledQuizEditor>
 
     </StyledEditorPage>

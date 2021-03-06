@@ -8,21 +8,21 @@ import { QuizData, AppData, initialApp } from './types';
 
 function App() {
   const [appData, setAppData] = useState<AppData>(initialApp);
-  // console.log('new state', appData);
 
   useEffect(() => {
     quizRef.onSnapshot((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         const documentArray = Object.values(doc.data());
         const documentName = doc.id;
-        const quiz = {
-          name: documentName,
-          key: doc.id,
-          data: documentArray,
-          status: '',
-        };
-
-        setAppData((prevState: AppData) => ({ ...prevState, [documentName]: quiz }));
+        setAppData((prevState: AppData) => ({
+          ...prevState,
+          [documentName]: {
+            name: documentName,
+            key: doc.id,
+            data: documentArray,
+            status: prevState[documentName] ? prevState[documentName].status : '',
+          },
+        }));
       });
     });
   }, []);
@@ -30,7 +30,6 @@ function App() {
   function updateAppData(currentQuiz: string, newQuizData: Array<QuizData>, quizStatus: string) {
     let data = newQuizData;
     let status = quizStatus;
-
     if (currentQuiz === 'New Quiz' && quizStatus === 'saved') {
       data = [];
       status = '';

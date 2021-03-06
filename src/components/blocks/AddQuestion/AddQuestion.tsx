@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Button } from 'antd';
 
 import StyledAddQuestion from './styles';
 import AddQuestionProps from './types';
 
-function AddQuestion({ addQuestion }: AddQuestionProps) {
-  const [questionText, setQuestionText] = useState('');
+function AddQuestion({ addQuestion, editQuestion }: AddQuestionProps) {
+  const [questionText, setQuestionText] = useState<string>('');
+
+  useEffect(() => {
+    setQuestionText(editQuestion.text);
+  }, [editQuestion]);
 
   function writeQuestion(event: React.ChangeEvent<HTMLInputElement>) {
     setQuestionText(event.target.value);

@@ -6,11 +6,6 @@ export const StyledEditorPage = styled.div`
   width: 80%;
 `;
 
-export const StyledQuizesSelect = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 export const StyledQuizEditor = styled.div`
   border: 1px gray solid;
   height: 100vh;

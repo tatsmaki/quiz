@@ -37,7 +37,6 @@ function SelectedQuiz({ newQuizData, deleteQuestion, editQuestion }: SelectedQui
       dataIndex: 'question',
       key: 'question',
       width: '43vw',
-      editable: true,
     },
     {
       title: 'Action',

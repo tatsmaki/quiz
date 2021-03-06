@@ -30,8 +30,7 @@ function App() {
   function updateAppData(currentQuiz: string, newQuizData: Array<QuizData>, quizStatus: string) {
     let data = newQuizData;
     let status = quizStatus;
-
-    if (currentQuiz === 'New Quiz' && quizStatus === 'green') {
+    if (currentQuiz === 'New Quiz' && quizStatus === 'saved') {
       data = [];
       status = '';
     }
